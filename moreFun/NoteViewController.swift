@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  NoteViewController.swift
 //  moreFun
 //
 //  Created by Apple on 6/26/19.
@@ -8,30 +8,28 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class NoteViewController: UIViewController {
+    var note : Notes? = nil
+    @IBOutlet weak var pageNote: UITextView!
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if let realNote = note {
+            title = realNote.title
+            pageNote.text = realNote.note
+        }
         // Do any additional setup after loading the view.
     }
-    
-    @IBOutlet weak var noteTitle: UITextField!
-    @IBOutlet weak var note: UITextView!
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         if self.isMovingFromParent {
-            if let context = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext {
-                let noteToSave = Notes(entity: Notes.entity(), insertInto: context)
-                noteToSave.note = note.text
-                noteToSave.title = noteTitle.text
+            if let realNote = note {
+                realNote.note = pageNote.text
             }
-            (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
         }
     }
     
+
     /*
     // MARK: - Navigation
 
